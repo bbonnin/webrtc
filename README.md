@@ -28,3 +28,8 @@ Open your browser, enter http://localhost:8888.
 The application has been tested with :
 * Google Chrome v31
 * Firefox v26 (PC and Android Phone)
+
+## Snapshots
+
+![Caller with Chrome](/docs/webrtc_part1.png)
+![Callee with FF](/docs/webrtc_part2.png)
