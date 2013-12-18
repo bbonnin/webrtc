@@ -32,5 +32,11 @@ The application has been tested with :
 
 ## Snapshots
 
+* Chrome on PC
+
 ![Caller with Chrome](/docs/webrtc_part1.png)
+
+
+* Firefox on Android Phone
+
 ![Callee with FF](/docs/webrtc_part2.png)
