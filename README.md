@@ -3,7 +3,7 @@ WebRTC
 
 Concrete example of WebRTC (real-time communications in web browsers).
 
-This project aims to show the WebRTC API and how we can make video calls with just a few lines of  JavaScript.
+This project aims to be a basic example of the WebRTC API and how we can make video calls with just a few lines of  JavaScript.
 Technologies used in the project:
 * [WebRTC API](http://en.wikipedia.org/wiki/WebRTC)
 * Client side : [HTML5](http://www.html5rocks.com/en/) (in this case : webrtc, video and web sockets), [AngularJS](http://angularjs.org/), [Twitter Bootstrap](http://twitter.github.com/bootstrap/), [JQuery](http://jquery.com/)
