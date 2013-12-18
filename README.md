@@ -19,11 +19,12 @@ Technologies used in the project:
 ## Run
 
 * Start NodeJS
+
 ``` bash
      node main
 ```
 
-Open your browser, enter http://localhost:8888.
+* Open your browser, enter http://localhost:8888.
 
 The application has been tested with :
 * Google Chrome v31
