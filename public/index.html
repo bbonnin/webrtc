@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="utf-8">
+<title>WebRTC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="webrtc, html5, angularjs, nodejs">
+    <meta name="author" content="Bruno Bonnin">
+    
+    <!-- Le styles -->
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style>
+    body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    }
+    .table-video td {
+        vertical-align : middle;
+    }
+    .video-container {
+        background-color:#fff;
+        text-align:center;
+    }
+    .video {
+        width:100%;
+    }
+    .username {
+        float: none;
+        padding: 10px 15px 10px;
+        color: #ffffff;
+        text-decoration: none;
+        text-shadow: 0 1px 0 #ce4213;
+    }
+    .userlist {
+        width: 100%;
+    }
+    </style>
+    <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+    
+    <script src="lib/jquery/jquery.js"></script>
+    <script src="lib/jquery/jquery.cookie.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/call.js"></script>
+    <script src="js/user.js"></script>
+    <script src="js/webrtc.js"></script>
+
+    <script>
+    var rtcMgr, callMgr, userMgr;
+
+    $(document).ready(function() {
+        rtcMgr = new RTCManager();
+        callMgr = new CallManager(rtcMgr);
+        userMgr = new UserManager(callMgr);
+
+        $("#logBtn").on("click", userMgr.loginOrLogout.bind(userMgr));
+        $("#loginBtn").on("click", userMgr.login.bind(userMgr));
+
+    });
+    </script>
+</head>
+
+<body>
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="index.html">WebRTC</a>
+                <div class="nav-collapse collapse">
+                    <form class="navbar-form pull-right">
+                        <span class="username" id="usernameLbl"></span>
+                        <button type="button" class="btn" id="logBtn"></button>
+                    </form>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="page-header">
+            <h3>Real-time communication in web browsers !</h3>
+        </div>
+            
+        <div class="row-fluid">
+            <div class="span3" ng-controller="UserController">
+                <div class="well" id="userlist">
+                    <strong>Online users :</strong>
+                    <p id="alertLogin" class="alert alert-danger">Log in to see the users</p>
+                    <table class="userlist">
+                        <tr ng-repeat="user in users">
+                            <td>{{user.name}}</td>
+                            <td><button class="btn" ng-disabled="user.busy || busy" onclick="callMgr.invite('{{user.name}}')"><i class="icon-facetime-video"></i> Call</button></td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <button style="width:100%;" class="btn btn-danger" ng-disabled="!busy" onclick="callMgr.bye()">Call End</button>
+                </div>
+            </div>
+            <div class="span7 well video-container">
+                <video id="remoteVideo" class="video"></video>
+            </div>
+            <div class="span2 well video-container">
+                <video id="localVideo" class="video"></video>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Log In</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputUsername">Username</label>
+                    <div class="controls">
+                        <input type="text" id="inputUsername" placeholder="User name">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+            <a href="#" class="btn btn-primary" id="loginBtn">Login</a>
+        </div>
+    </div>
+
+    <div id="callModal" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Call</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                <span id="caller"></span> is inviting you. Do you accept the call ?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">No</a>
+            <a href="#" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="callMgr.acceptCall()">Yes</a>
+        </div>
+    </div>
+</body>
+</html>

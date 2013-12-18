@@ -1,0 +1,10 @@
+{
+  "name": "WebRTC",
+  "description": "App showing the WebRTC API",
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+    "express": "3.x",
+    "websocket": "1.x"
+  }
+}
