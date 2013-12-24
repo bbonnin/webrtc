@@ -40,28 +40,20 @@ RTCManager.prototype.createOffer = function(offerCb) {
 
     this.peerConnection = new RTCPeerConnection(null);
     this.peerConnection.addStream(this.localStream);
-    
-    /*this.peerConnection.onicecandidate = function(evt) {
-        console.log("onicecandidate : candidate=" + evt.candidate);
-    };*/
 
     this.peerConnection.onaddstream = function(evt) {
-        console.log("onaddstream : stream=" + evt.stream);        
-        var remotevideo = $("#remoteVideo")[0];
-        remotevideo.mozSrcObject = evt.stream;
-        remotevideo.src = URL.createObjectURL(evt.stream);
-        remotevideo.play();
-    };
+        this.updateRemoteVideo(evt.stream);
+    }.bind(this);
 
     this.peerConnection.createOffer(
-      function(offer) {
-          this.peerConnection.setLocalDescription(offer);
-          offerCb(offer);
-      }.bind(this)
-      ,
-      function(error) {
-          console.log("ERROR createOffer : " + error);
-      }
+        function(offer) {
+            this.peerConnection.setLocalDescription(offer);
+            offerCb(offer);
+        }.bind(this)
+        ,
+        function(error) {
+            console.log("ERROR createOffer : " + error);
+        }
     );
 }
 
@@ -71,11 +63,8 @@ RTCManager.prototype.createAnswer = function(sdp, answerCb) {
     this.peerConnection.addStream(this.localStream);
  
     this.peerConnection.onaddstream = function(obj) {
-        var remotevideo = $("#remoteVideo")[0];
-        remotevideo.mozSrcObject = obj.stream;
-        remotevideo.src = URL.createObjectURL(obj.stream);
-        remotevideo.play();
-    };
+        this.updateRemoteVideo(obj.stream);
+    }.bind(this);
  
     var sessionDesc = new RTCSessionDescription(sdp);
     this.peerConnection.setRemoteDescription(sessionDesc, function() {
@@ -95,13 +84,13 @@ RTCManager.prototype.createAnswer = function(sdp, answerCb) {
 RTCManager.prototype.setRemoteDescription = function(sdp) {
     var sessionDesc = new RTCSessionDescription(sdp);
     this.peerConnection.setRemoteDescription(sessionDesc, 
-      function() {
-          console.log("Session established");
-      }
-      ,
-      function(error) {
-          console.log("ERROR setRemoteDescription : " + error);
-      }
+        function() {
+            console.log("Session established");
+        }
+        ,
+        function(error) {
+            console.log("ERROR setRemoteDescription : " + error);
+        }
     );
 }
 
@@ -111,4 +100,11 @@ RTCManager.prototype.endSession = function() {
     remotevideo.src = null;
     
     this.peerConnection = null;
+}
+
+RTCManager.prototype.updateRemoteVideo = function(stream) {
+    var remotevideo = $("#remoteVideo")[0];
+    remotevideo.mozSrcObject = stream;
+    remotevideo.src = URL.createObjectURL(stream);
+    remotevideo.play();
 }

@@ -9,6 +9,8 @@ Technologies used in the project:
 * Client side : [HTML5](http://www.html5rocks.com/en/) (in this case : webrtc, video and web sockets), [AngularJS](http://angularjs.org/), [Twitter Bootstrap](http://twitter.github.com/bootstrap/), [JQuery](http://jquery.com/)
 * Server side : [Node.js](http://nodejs.org/), [Express](http://expressjs.com/)
 
+The call management is based on SIP with REGISTER, INVITE, ACK, BYE requests (of course, it is a simpler version :-)).
+
 
 ## Installation
 
