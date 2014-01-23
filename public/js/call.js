@@ -22,6 +22,8 @@ CallManager.prototype.createConnection = function(username) {
     this.username = username;
     this.wsConnection = new WebSocket('ws://' + window.location.host, 'callsig-protocol');
 
+    $('#console').val($('#console').val() + '\n websocket url : ws://' + window.location.host);
+
     this.wsConnection.onopen = function () {
         this.send(JSON.stringify({ action:"register", userId:username }));
         angular.element('[ng-controller=UserController]').scope()
@@ -30,9 +32,11 @@ CallManager.prototype.createConnection = function(username) {
 
     this.wsConnection.onerror = function (error) {
         console.log("websocket error : " + error);
+        $('#console').val($('#console').val() + '\n websocket error : ' + error);
     };
 
     this.wsConnection.onmessage = function (message) {
+        $('#console').val($('#console').val() + '\n websocket msg : ' + message.data);
         try {
             var msg = JSON.parse(message.data);
 
@@ -61,6 +65,7 @@ CallManager.prototype.createConnection = function(username) {
         }
         catch (e) {
             console.log('Problem with message : msg=' + message.data + ', error=', e);
+            $('#console').val($('#console').val() + '\n Problem with message : msg=' + message.data + ', error=' + e);
         }
     }.bind(this);
 }
